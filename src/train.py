@@ -21,12 +21,13 @@ import mlflow.sklearn
 
 # set registry URI i.e. where MLflow saves runs
 
-# mlflow.set_tracking_uri("file:///Users/ahmed.besbes/projects/mlflow/mlruns")
+# the URI when its a file then, "file:///then the absolute_path_to_mlflow_project/mlruns"
+mlflow.set_tracking_uri("file:///home/prince/Desktop/content/mlflow_learning/mlflow/mlruns")
 
 
-mlflow.set_tracking_uri(
-    "http://ec2-35-180-45-108.eu-west-3.compute.amazonaws.com:5000/"
-)
+# mlflow.set_tracking_uri(
+#     "http://ec2-35-180-45-108.eu-west-3.compute.amazonaws.com:5000/"
+# )
 
 
 # print("artifact store : ", mlflow.get_artifact_uri())
@@ -69,9 +70,15 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 alpha = sys.argv[0] if len(sys.argv) > 1 else 0.5
 
+# use mlflow.create_experiment("exprt name") to create a new eexperiment
 
-# experiment_id = mlflow.create_experiment("training experiment")
-experiment_id = mlflow.set_experiment("training experiment")
+# experiment_id = mlflow.create_experiment("training experiment2")
+
+# use mlflow.set_experiment("existing exprt name")
+# to set the experiment you wish to use
+experiment_id = mlflow.set_experiment("training experiment2")
+
+
 
 
 n_estimators_range = np.arange(100, 500, 25)
@@ -82,7 +89,8 @@ max_features_range = ["sqrt", None, "log2"]
 for n_estimators in tqdm(n_estimators_range):
     for max_depth in tqdm(max_depth_range, leave=False):
         for max_features in tqdm(max_features_range, leave=False):
-
+            # autolog() was used in experiment2, open it to see how autolog() works
+            # mlflow.sklearn.autolog()
             with mlflow.start_run(experiment_id=experiment_id):
 
                 model = RandomForestClassifier(
